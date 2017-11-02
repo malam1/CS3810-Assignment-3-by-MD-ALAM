@@ -1,52 +1,56 @@
-CREATE OR REPLACE FUNCTION display_airline_name (airline_name	varchar)
-RETURNS varchar AS $$
-declare
-	airline_name varchar;
+create or replace function FlightSummary()
+	return varchar(50) as $AirlineName$, 
+			int as $totalFlights$, 
+			float as $avgDistance$,
+			float as $passengersToDistance$,
+			float as $freightToDistance$,
+			int as $corrCoeffPassengersToDistance$,
+			int as $corrCoeffFreightToDistance$
+	
+	declare AirlineName	varchar(50);
+			totalFlights int;
+			avgDistance float;
+			passengersToDistance float;
+			freightToDistance float;
+			corrCoefPtoD int;
+			corrCoefFtoD int;
+
 BEGIN
-   SELECT * from airlines;
-   RETURN airline_name;
-END;
-$total$ LANGUAGE plpgsql;
+	select distinct UNIQUE_CARRIER_NAME from Carrier into AirlineName;
+	select count(*) from Flight_Sum where Flight_Sum.UNIQUE_CARRIER_NAME = AirlineName into totalFlights;
+	select avg(Distance) from Flight_Sum where Flight_Sum.UNIQUE_CARRIER_NAME = AirlineName into avgDistance;
+	select passengers / Distance from Flight_Sum where Flight_Sum.UNIQUE_CARRIER_NAME = AirlineName into passengersToDistance;
+	select freight / Distance from Flight_Sum where Flight_Sum.UNIQUE_CARRIER_NAME = AirlineName into freightToDistance; 
+	
+	if passengersToDistance > 1
+	Then corrCoefPToD = 1;
+	Else corrCoefPToD = -1;
+	End if;
 
+	if freightToDistance > 1
+	Then corrCoefFToD = 1;
+	Else corrCoefFToD = -1;
+	End if;
 
-CREATE OR REPLACE FUNCTION totalflights ()
-RETURNS integer AS $total$
-declare
-	total integer;
-BEGIN
-   SELECT count(*) into total FROM airlines;
-   RETURN total;
-END;
-$total$ LANGUAGE plpgsql;
-
-
-
-CREATE OR REPLACE FUNCTION get_average_distance(city.distance INTEGER)
- RETURNS INTEGER AS $$
-DECLARE 
- city.distance integer;
-BEGIN
-
- SELECT INTO distance
-             AVG(SUM(city.distance)/SUM(city.air_time)) 
- FROM city 
- 
- RETURN average_distance;
-END; $$
-LANGUAGE plpgsql;
-
-
-
-CREATE OR REPLACE FUNCTION Ratio_OF_passengers_and_distance(
- airlines.passengers integer, 
- city.distance integer) 
-RETURNS integer AS $$
-BEGIN
- RETURN airlines.passengers/city.distance ;
-END; $$
- 
-LANGUAGE plpgsql;
+End
 
 
 
 
+
+
+
+			
+
+© 2017 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+API
+Training
+Shop
+Blog
+About

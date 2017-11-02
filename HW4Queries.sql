@@ -1,34 +1,32 @@
-SELECT c.origin_city_name, s.origin_state_name, a.origin, a.origin_airport_code, al.Airline_name, SUM(al.passengers)
-FROM Airport a INNER JOIN City c ON (a.airline_id = c.airline_id)
-INNER JOIN State s ON (a.airline_id = s.airline_id)
-INNER JOIN Airlines al ON (a.airline_id = al.airline_id)
-WHERE a.city.origin_city-name like '%CO'
-GROUP BY airlines.passengers
-HAVING SUM(passengers);
- 
-
-SELECT c.origin_city_name, s.origin_state_name, a.origin, a.origin_airport_code, al.Airline_name, SUM(c.freight)
-FROM Airport a INNER JOIN City c ON (a.airline_id = c.airline_id)
-INNER JOIN State s ON (a.airline_id = s.airline_id)
-INNER JOIN Airlines al ON (a.airline_id = al.airline_id)
-WHERE a.city.origin_city-name like '%CO'
-GROUP BY city.freight
-HAVING SUM(freight);
+SELECT CITY_NAME, STATE_NAME, AIRPORT, UNIQUE_CARRIER_NAME, AIRPORT_CODE, Sum(PASSENGERS)
+FROM Cities natural join States natural join Airport, Flight_Sum natural join Carrier
+WHERE Flight_Sum.ORIGIN_AIRPORT_ID = Airport.AIRPORT_ID and Airport.CITY_MARKET_ID = Cities.CITY_MARKET_ID and Cities.STATE_ABR = 'CO' 
+GROUP BY CITY_NAME, STATE_NAME, AIRPORT, UNIQUE_CARRIER_NAME, AIRPORT_CODE,
+ORDER BY UNIQUE_CARRIER_NAME;
 
 
-SELECT c.origin_city_name, s.origin_state_name, c.dest_city_name, al.Airline_name, SUM(al.passengers)
-FROM City c INNER JOIN State s ON (c.airline_id = s.airline_id)
-INNER JOIN Airlines al ON (c.airline_id = al.airline_id)
-WHERE State.origin_state_name != 'colorado' and State.dest_state_name = 'colorado';
-GROUP BY airlines.passengers
-HAVING SUM(passengers);
+SELECT CITY_NAME, STATE_NAME, AIRPORT, UNIQUE_CARRIER_NAME, AIRPORT_CODE, Sum(FREIGHT)
+FROM Cities natural join States natural join Airport, Flight_Sum natural join Carrier
+WHERE Flight_Sum.ORIGIN_AIRPORT_ID = Airport.AIRPORT_ID and Airport.CITY_MARKET_ID = Cities.CITY_MARKET_ID and Cities.STATE_ABR = 'CO' 
+GROUP BY CITY_NAME, STATE_NAME, AIRPORT, UNIQUE_CARRIER_NAME, AIRPORT_CODE,
+ORDER BY UNIQUE_CARRIER_NAME;
 
 
-SELECT c.origin_city_name, s.origin_state_name, al.Airline_name
-FROM airlines al INNER JOIN City c ON (al.airline_id = c.airline_id)
-INNER JOIN State s ON (al.airline_id = s.airline_id)
-WHERE city.distance BETWEEN 500 and 1200
-and city dest_city_name= 'Denver, CO';
+SELECT originC.CITY_NAME as originCity, originS.STATE_NAME as originState, destC.CITY_NAME as destCity, UNIQUE_CARRIER_NAME, sum(Passengers)
+FROM Cities originC , Cities destC, States originS, Carrier natural join Flight_Sum, Airport originAirport , Airport destAirport
+WHERE Flight_Sum.ORIGIN_AIRPORT_ID = originAirport.AIRPORT_ID and originAirport.CITY_MARKET_ID = originC.CITY_MARKET_ID and originC.STATE_ABR <> 'CO' 
+	and originC.STATE_ABR = originS.STATE_ABR and Flight_Sum.DEST_AIRPORT_ID = destAirport.AIRPORT_ID and destAirport.CITY_MARKET_ID = destC.CITY_MARKET_ID
+	and destC.STATE_ABR = 'CO'
+GROUP BY originCity, originState, destCity, UNIQUE_CARRIER_NAME
+ORDER BY originCity;
+
+
+SELECT CITY_NAME originCity, STATE_NAME originStates, UNIQUE_CARRIER_NAME
+FROM Airport, Cities, States, Carrier, Flight_Sum
+WHERE Flight_Sum.ORIGIN_AIRPORT_ID = Airport.AIRPORT_ID and Airport.CITY_MARKET_ID = Cities.CITY_MARKET_ID and Cities.STATE_ABR = States.STATE_ABR 
+	and Flight_Sum.AIRLINE_ID = Carrier.AIRLINE_ID and Flight_Sum.DISTANCE between 500 and 1200
+GROUP BY originCity, originState, UNIQUE_CARRIER_NAME;
+
 
 
 
