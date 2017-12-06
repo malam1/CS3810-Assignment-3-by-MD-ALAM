@@ -43,9 +43,7 @@ CREATE TABLE Cities(
 	cityName varchar(50),
 	provinceName varchar(50),
 	cityCode int,
-	originCode int,
-	destCode int,
-	PRIMARY KEY(cityCode,originCode,destCode)
+	PRIMARY KEY(cityCode)
 );
 
 CREATE TABLE PostalCodes(
@@ -80,24 +78,24 @@ CREATE TABLE Flight(
 );
 
 CREATE TABLE Booking(
-	uniqueBookingNumber int,
+	uniqueBookingNum int,
 	cityCodeOfBooking int,
-	uniqueFlightNumber int,
+	uniqueFlightNum int,
 	payingCustomerFirstName varchar(50),
 	payingCustomerLastName varchar(50),
 	payingCustomerStreet varchar(50),
 	payingCustomerPostalCode varchar(20),
-	PRIMARY KEY (uniqueBookingNumber),
+	PRIMARY KEY (uniqueBookingNum),
 	FOREIGN KEY(payingCustomerFirstName,payingCustomerLastName,
 		payingCustomerStreet,payingCustomerPostalCode) REFERENCES Customers(firstName, lastName, street, postalCode)
 );
 
 CREATE TABLE Tickets(
-	uniqueBookingNumber int,
+	uniqueBookingNum int,
 	firstName varchar(50),
 	lastName varchar(50),
 	street varchar(100),
 	postalCode varchar(20),
 	FOREIGN KEY (firstName,lastName) REFERENCES Customers(firstName,lastName),
-	FOREIGN KEY (uniqueBookingNumber) REFERENCES Booking(uniqueBookingNumber)
+	FOREIGN KEY (uniqueBookingNum) REFERENCES Booking(uniqueBookingNum)
 );
