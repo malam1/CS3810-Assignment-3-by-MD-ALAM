@@ -17,7 +17,7 @@ CREATE TABLE MailingAddress(
 	postalCode integer,
 	countryName varchar(25),
 	PRIMARY KEY(firstName,lastName,street,postalCode),
-	FOREIGN KEY(firstName,lastName) REFERENCES customers(firstName,lastName)
+	FOREIGN KEY(firstName,lastName, street, postalCode) REFERENCES customers(firstName,lastName, street, postalCode)
 );
 
 CREATE TABLE PhoneNumbers(
@@ -30,7 +30,7 @@ CREATE TABLE PhoneNumbers(
 	street varchar(150),
 	postalCode varchar(15),
 	PRIMARY KEY(phoneNumber,firstName,lastName),
-	FOREIGN KEY(firstName,lastName) REFERENCES Customers(firstName,lastName)
+	FOREIGN KEY(firstName,lastName, street, postalCode) REFERENCES Customers(firstName,lastName, street, postalCode)
 );
 
 CREATE TABLE Provinces(
@@ -63,7 +63,7 @@ CREATE TABLE Flight(
 	originCode int,
 	destCode int,
 	airlineCode int,
-	uniqueFlightNumber int,
+	uniqueFlightNum int,
 	flightNumber int,
 	deptDate varchar(150),
 	deptHour int,
@@ -96,6 +96,6 @@ CREATE TABLE Tickets(
 	lastName varchar(50),
 	street varchar(100),
 	postalCode varchar(20),
-	FOREIGN KEY (firstName,lastName) REFERENCES Customers(firstName,lastName),
+	FOREIGN KEY (firstName,lastName, street, postalCode) REFERENCES Customers(firstName,lastName, street, postalCode),
 	FOREIGN KEY (uniqueBookingNum) REFERENCES Booking(uniqueBookingNum)
 );
