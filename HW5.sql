@@ -4,7 +4,7 @@ CREATE TABLE Customers(
 	street varchar(150),
 	postalCode varchar(15),
 	email varchar(150),
-	PRIMARY KEY(firstName,lastName)
+	PRIMARY KEY(firstName,lastName, street, postalCode)
 	
 );
 
@@ -89,7 +89,7 @@ CREATE TABLE Booking(
 	payingCustomerPostalCode varchar(20),
 	PRIMARY KEY (uniqueBookingNumber),
 	FOREIGN KEY(payingCustomerFirstName,payingCustomerLastName,
-		payingCustomerStreet,payingCustomerPostalCode) REFERENCES Customers(firstName,lastName)
+		payingCustomerStreet,payingCustomerPostalCode) REFERENCES Customers(firstName, lastName, street, postalCode)
 );
 
 CREATE TABLE Tickets(
