@@ -63,7 +63,7 @@ CREATE TABLE Flight(
 	originCode int,
 	destCode int,
 	airlineCode int,
-	uniqueFlightNumber int,
+	uniqueFlightNum int,
 	flightNumber int,
 	deptDate varchar(150),
 	deptHour int,
