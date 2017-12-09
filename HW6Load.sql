@@ -1,0 +1,4 @@
+\copy Cities(cityName,provinceName,cityCode) FROM 'C:\Users\Md Jahangir Alam\Desktop\Cities6.csv' DELIMITER ',' CSV HEADER;
+\copy Provinces(provinceName,countryName) FROM 'C:\Users\Md Jahangir Alam\Desktop\Provinces6.csv' DELIMITER ',' CSV HEADER;
+\copy Airlines(airlineName,airlineCode,OriginCountry) FROM 'C:\Users\Md Jahangir Alam\Desktop\Airlines6.csv' DELIMITER ',' CSV HEADER;
+\copy Flight(originCode,destCode,airlineCode,uniqueFlightNum,flightNum,deptDate,deptHour,deptMinute,arrivalDate,arrivalHour,arrivalMinute) FROM 'C:\Users\Md Jahangir Alam\Desktop\Flights6.csv' DELIMITER ',' CSV HEADER;
